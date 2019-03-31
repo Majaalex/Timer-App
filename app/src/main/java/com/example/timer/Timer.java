@@ -44,6 +44,7 @@ public class Timer extends Fragment{
         timerSetButton = v.findViewById(R.id.button_timerSet);
 
 
+        // Button listener activations
         timerSetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,23 +71,29 @@ public class Timer extends Fragment{
         return v;
     }
 
+    // Set the timer to a value based on user input
     private void setTimer(View v) {
         String input = mEditTextTimer.getText().toString();
+        // Check that field isn't empty
         if (input.length() == 0){
             Toast.makeText(getContext(), "Field can't be empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Check that field isn't 0
         long millisInput = Long.parseLong(input) * 60000;
         if (millisInput == 0){
             Toast.makeText(getContext(), "Please enter a positive number", Toast.LENGTH_SHORT).show();
             return;
         }
-        setTime(millisInput);
+        // Set the time
+        mStartTimeInMillis = millisInput;
+        resetTimer();
         mEditTextTimer.setText("");
         closeKeyboard(v);
     }
 
+    // Hide user input while the timer is running, and show when timer is stopped
     private void updateWatchInterface(){
         if (mTimerRunning){
             mEditTextTimer.setVisibility(View.INVISIBLE);
@@ -96,10 +103,8 @@ public class Timer extends Fragment{
             timerSetButton.setVisibility(View.VISIBLE);
         }
     }
-    private void setTime(long milliseconds){
-        mStartTimeInMillis = milliseconds;
-        resetTimer();
-    }
+
+    // Reset the timer
     private void resetTimer() {
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
@@ -110,6 +115,7 @@ public class Timer extends Fragment{
         updateWatchInterface();
     }
 
+    // stop the timer if it is running
     private void stopTimer(Button timerStopButton) {
         timerStopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +129,7 @@ public class Timer extends Fragment{
         });
     }
 
+    // Start the timer if it is not running
     private void startTimer() {
         mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
 
@@ -160,6 +167,7 @@ public class Timer extends Fragment{
     }
 
     @Override
+    // Get the values stored while the app is closed to continue timer as if it never got turned off
     public void onStart() {
         super.onStart();
         Context context = getContext();
@@ -193,6 +201,7 @@ public class Timer extends Fragment{
         }
     }
     @Override
+    // Store the timer on exit, so that the app can continue the timer with the correct time when resumed
     public void onStop() {
         super.onStop();
         Context context = getContext();

@@ -20,9 +20,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // BottomNavigation as TopNav..
         BottomNavigationView topNav = findViewById(R.id.topNav);
+        // Listen to clicks on the nav bar
         topNav.setOnNavigationItemSelectedListener(navListener);
 
+        // Change to that nav fragment
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Stopwatch()).commit();
     }
 

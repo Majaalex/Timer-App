@@ -40,20 +40,23 @@ public class Stopwatch extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.fragment_stopwatch, container, false);
         chronometer = v.findViewById(R.id.chronometer_stopwatch);
+        // Get the button listeners up and running
         initButtons(v);
         mItemList = new ArrayList<>();
         buildRecyclerView(v);
         return v;
     }
 
+    // Input the lapped time to the bottom of the list for the recyclerView
     public void insertItemAtEnd(){
-
         seconds = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
         minutes = seconds /  60;
         seconds = seconds % 60;
         mItemList.add(mItemList.size(),new ListItem(String.format("%02d", minutes)+ ":" + String.format("%02d", seconds)));
         mAdapter.notifyDataSetChanged();
     }
+
+
     private void initButtons(View v) {
         mButtonStopwatchStart = v.findViewById(R.id.button_stopwatchStart);
         mButtonStopwatchStop = v.findViewById(R.id.button_stopwatchStop);
